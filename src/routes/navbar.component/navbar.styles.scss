@@ -2,17 +2,24 @@
     background-color: #16448d;
     padding:2%;
     border-bottom: solid 2px black;
-    
+    font-size: 1.5rem;
+    & .navbar-inner{
+        display: flex;
+    }
     .navbar-brand{
         display: flex;
-        flex-direction: row-reverse;
         color: antiquewhite;
+        justify-content: space-between;
         align-items: center;
+        flex-grow: 1;
     }
 
     img{
         max-height: 75px;
         margin: 0;
+        &:hover{
+            cursor: pointer;
+        }
 
     }
     ul{
@@ -22,6 +29,9 @@
         text-decoration: none;
         li{
             padding: 0 10px 0 10px;
+            &:hover{
+                cursor: pointer;
+            }
         }
     }
 }

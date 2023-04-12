@@ -6,11 +6,13 @@ const Navbar = () => {
       <div className="navbar-inner">
         <div className="navbar-brand">
           <img src="/public/Fire_Chat-removebg-preview.png" />
-          <ul>
-            <li>Home</li>
-            <li>Sign Up</li>
-            <li>Sign In</li>
-          </ul>
+          <span>
+            <ul>
+              <li>Home</li>
+              <li>Sign Up</li>
+              <li>Sign In</li>
+            </ul>
+          </span>
         </div>
       </div>
     </div>
