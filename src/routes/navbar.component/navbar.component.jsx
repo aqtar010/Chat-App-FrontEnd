@@ -5,7 +5,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="navbar-inner">
         <div className="navbar-brand">
-          <img src="/public/Fire_Chat-removebg-preview.png" />
+          <img src="/Fire_Chat-removebg-preview.png" />
           <span>
             <ul>
               <li>Home</li>
