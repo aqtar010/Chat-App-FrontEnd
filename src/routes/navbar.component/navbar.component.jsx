@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import "./navbar.styles.scss";
 
 const Navbar = () => {
@@ -15,6 +16,7 @@ const Navbar = () => {
           </span>
         </div>
       </div>
+      <Outlet/>
     </div>
   );
 };
