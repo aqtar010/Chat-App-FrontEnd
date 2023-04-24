@@ -9,9 +9,9 @@ const Navbar = () => {
           <img src="/Fire_Chat-removebg-preview.png" />
           <span>
             <ul>
-              <li>Home</li>
-              <li>Sign Up</li>
-              <li>Sign In</li>
+              <li><a >Home</a></li>
+              <li><a>Sign up</a></li>
+              <li><a>Sign In</a></li>
             </ul>
           </span>
         </div>
