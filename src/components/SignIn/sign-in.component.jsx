@@ -2,7 +2,12 @@ import './sign-in.styles.scss'
 
 const SignIn=()=>{
     return <>
-    Sign In Page
+    
+    <div className='sign-in-container'>
+        <input placeholder='Email' type='email'/>
+        <input placeholder='Password' type='password'/>
+        <button>Sign In</button>
+    </div>
     </>
 }
 
