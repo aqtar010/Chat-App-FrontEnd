@@ -15,7 +15,7 @@ const SignIn = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch("http://localhost:5000/submit", {
+    fetch("http://localhost:5000/auth/sign-in", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
