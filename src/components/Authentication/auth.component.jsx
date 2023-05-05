@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "./sign-in.styles.scss";
+import "./auth.styles.scss";
 
-const SignIn = () => {
+const Auth = () => {
   const [inputs, setInputs] = useState({});
 
   const handleChange = (event) => {
@@ -34,7 +34,7 @@ const SignIn = () => {
   return (
     <>
       <div className="sign-in-container">
-        <form type="submit" onSubmit={handleSubmit}>
+        <form type="submit" onSubmit={handleSubmit} className="form">
           <input
             name="Email"
             placeholder="Email"
@@ -54,4 +54,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Auth;
