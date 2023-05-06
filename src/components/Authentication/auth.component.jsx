@@ -18,9 +18,9 @@ const Auth = () => {
     fetch("http://localhost:5000/auth/sign-in", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(inputs)
+      body: JSON.stringify(inputs),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -52,7 +52,16 @@ const Auth = () => {
         </form>
         <form>
           <h2>Sign Up</h2>
-          <input name="Fname" placeholder="First Name" type="text"/>
+          <input name="Fname" placeholder="First Name" type="text" />
+          <input name="Lname" placeholder="Last Name" type="text" />
+          <input name="Email" placeholder="Email" type="email" />
+          <input name="Password" placeholder="Password" type="password" />
+          <input
+            name="ConfirmPass"
+            placeholder="Confirm Password"
+            type="password"
+          />
+          <button type="submit">Sign Up</button>
         </form>
       </div>
     </>
