@@ -34,6 +34,7 @@ const Auth = () => {
   return (
     <>
       <div className="sign-in-container">
+        <h2>Sign In</h2>
         <form type="submit" onSubmit={handleSubmit} className="form">
           <input
             name="Email"
@@ -48,6 +49,10 @@ const Auth = () => {
             onChange={handleChange}
           />
           <button type="submit">Sign In</button>
+        </form>
+        <form>
+          <h2>Sign Up</h2>
+          <input name="Fname" placeholder="First Name" type="text"/>
         </form>
       </div>
     </>
