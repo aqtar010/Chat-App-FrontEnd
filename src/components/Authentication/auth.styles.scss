@@ -46,7 +46,15 @@ $white: #f9f9f9;
       width: 350px;
       height: 40px;
       border-radius: 8px;
-      background-color: aquamarine;
+      background-color: #16448d;
+      transition: .4s;
+      color: #d1d9e6;
+
+      &:hover{
+        background-color: #2f64b9;
+        font-size: 110%;
+        transition: 0.5s;
+      }
     }
   }
 }
@@ -83,7 +91,15 @@ $white: #f9f9f9;
       width: 350px;
       height: 40px;
       border-radius: 8px;
-      background-color: aquamarine;
+      background-color: #16448d;
+      transition: 0.4s;
+      color: #d1d9e6;
+      
+      &:hover{
+        background-color: #2f64b9;
+        font-size: 110%;
+        transition: 0.5s;
+      }
     }
   }
 }
