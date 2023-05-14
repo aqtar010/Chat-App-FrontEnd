@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./auth.styles.scss";
+import { useEffect } from "react";
 
 const Auth = () => {
   const [signInInputs, setsignInInputs] = useState({ email: "", password: "" });
@@ -10,6 +11,7 @@ const Auth = () => {
     Password: "",
     ConfirmPass: "",
   });
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const handleSignInChange = (event) => {
     const name = event.target.name;
@@ -18,6 +20,7 @@ const Auth = () => {
       return { ...values, [name]: value };
     });
   };
+
   const handleSignupChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -44,7 +47,17 @@ const Auth = () => {
         console.error("Error:", error);
       });
     setsignInInputs({ email: "", password: "" });
+    // setsignInInputs({});
   };
+
+  useEffect(() => {
+    if (signUpInputs.Password === signUpInputs.ConfirmPass) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [signUpInputs.Password, signUpInputs.ConfirmPass]);
+
   const handleSubmitSignUp = (event) => {
     event.preventDefault();
 
@@ -77,7 +90,7 @@ const Auth = () => {
         <h2>Sign In</h2>
         <form type="submit" onSubmit={handleSubmitSignIn} className="form">
           <input
-            name="Email"
+            name="email"
             placeholder="Email"
             type="email"
             value={signInInputs.email}
@@ -85,7 +98,7 @@ const Auth = () => {
             onChange={handleSignInChange}
           />
           <input
-            name="Password"
+            name="password"
             placeholder="Password"
             type="password"
             value={signInInputs.password}
@@ -138,7 +151,17 @@ const Auth = () => {
             required
             onChange={handleSignupChange}
           />
-          <button type="submit">Sign Up</button>
+          <button
+            type="submit"
+            disabled={buttonDisabled}
+            title={
+              buttonDisabled
+                ? "Please enter matching passwords"
+                : "Click to submit form"
+            }
+          >
+            Sign Up
+          </button>
         </form>
       </div>
     </div>
