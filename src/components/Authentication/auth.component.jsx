@@ -11,7 +11,7 @@ const Auth = () => {
     Password: "",
     ConfirmPass: "",
   });
-  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [matchingPass, setMatchingPass] = useState(true);
 
   const handleSignInChange = (event) => {
     const name = event.target.name;
@@ -28,60 +28,72 @@ const Auth = () => {
       return { ...values, [name]: value };
     });
   };
-
-  const handleSubmitSignIn = (event) => {
+  const handleSubmitSignIn = async (event) => {
     event.preventDefault();
 
-    fetch("http://localhost:5000/auth/sign-in", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signInInputs),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+    try {
+      const response = await fetch("http://localhost:5000/auth/sign-in", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signInInputs),
       });
-    setsignInInputs({ email: "", password: "" });
-    // setsignInInputs({});
+
+      if (!response.ok) {
+        throw new Error("Sign-in failed");
+      }
+
+      const data = await response.json();
+      console.log("Success:", data);
+
+      setsignInInputs({ email: "", password: "" });
+    } catch (error) {
+      console.error("Error:", error.message);
+      // Handle error, show error message to the user, etc.
+    }
   };
 
   useEffect(() => {
     if (signUpInputs.Password === signUpInputs.ConfirmPass) {
-      setButtonDisabled(false);
+      setMatchingPass(true);
     } else {
-      setButtonDisabled(true);
+      setMatchingPass(false);
     }
   }, [signUpInputs.Password, signUpInputs.ConfirmPass]);
-
-  const handleSubmitSignUp = (event) => {
+  const handleSubmitSignUp = async (event) => {
     event.preventDefault();
+    if (matchingPass) {
+      try {
+        const response = await fetch("http://localhost:5000/auth/sign-up", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(signUpInputs),
+        });
 
-    fetch("http://localhost:5000/auth/sign-up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signUpInputs),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+        if (!response.ok) {
+          throw new Error("Sign-up failed");
+        }
+
+        const data = await response.json();
         console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    setsignUpInputs({
-      Fname: "",
-      Lname: "",
-      Email: "",
-      Password: "",
-      ConfirmPass: "",
-    });
+
+        setsignUpInputs({
+          Fname: "",
+          Lname: "",
+          Email: "",
+          Password: "",
+          ConfirmPass: "",
+        });
+      } catch (error) {
+        console.error("Error:", error.message);
+        // Handle error, show error message to the user, etc.
+      }
+    } else {
+      alert("Password not matching");
+    }
   };
 
   return (
@@ -151,17 +163,7 @@ const Auth = () => {
             required
             onChange={handleSignupChange}
           />
-          <button
-            type="submit"
-            disabled={buttonDisabled}
-            title={
-              buttonDisabled
-                ? "Please enter matching passwords"
-                : "Click to submit form"
-            }
-          >
-            Sign Up
-          </button>
+          <button type="submit">Sign Up</button>
         </form>
       </div>
     </div>
