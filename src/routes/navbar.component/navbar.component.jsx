@@ -16,6 +16,7 @@ const Navbar = () => {
                 <li>
                   <Link to="/auth">Sign in</Link>
                 </li>
+                <li></li>
               </ul>
             </span>
           </div>

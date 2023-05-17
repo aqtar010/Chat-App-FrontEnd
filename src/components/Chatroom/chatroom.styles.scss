@@ -1,0 +1,26 @@
+.chatroom-container {
+  span {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    grid-template-rows: 1fr;
+    gap: 20px 20px;
+    grid-auto-flow: row;
+    grid-template-areas: ". .";
+    div {
+      border: 10px solid whitesmoke;
+      min-height: 400px;
+    }
+    .chat-list-container ul {
+      display: flex;
+      flex-direction: column-reverse;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: stretch;
+      list-style: none;
+      li {
+        display: block;
+      }
+    }
+  }
+}

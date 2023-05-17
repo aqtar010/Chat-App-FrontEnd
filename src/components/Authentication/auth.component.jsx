@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./auth.styles.scss";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const Auth = () => {
   const [signInInputs, setsignInInputs] = useState({ email: "", password: "" });
@@ -12,7 +14,7 @@ const Auth = () => {
     ConfirmPass: "",
   });
   const [matchingPass, setMatchingPass] = useState(true);
-
+  const navigate = useNavigate();
   const handleSignInChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -41,6 +43,7 @@ const Auth = () => {
       });
 
       if (!response.ok) {
+        alert("Sign-in failed");
         throw new Error("Sign-in failed");
       }
 
@@ -48,6 +51,7 @@ const Auth = () => {
       console.log("Success:", data);
 
       setsignInInputs({ email: "", password: "" });
+      navigate('/chatroom')
     } catch (error) {
       console.error("Error:", error.message);
       // Handle error, show error message to the user, etc.
@@ -74,6 +78,7 @@ const Auth = () => {
         });
 
         if (!response.ok) {
+          alert("Sign-up failed");
           throw new Error("Sign-up failed");
         }
 
