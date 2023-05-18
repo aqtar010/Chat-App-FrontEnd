@@ -13,7 +13,12 @@ const ChatRoom = () => {
             <li>sooma</li>
           </ul>
         </div>
-        <div className="chat-area-conntainer">this is chat area</div>
+        <div className="chat-area-conntainer">
+          <form type="submit">
+            <input type="textarea" placeholder="Enter Message"></input>
+            <button>Enter</button>
+          </form>
+        </div>
       </span>
     </div>
   );
