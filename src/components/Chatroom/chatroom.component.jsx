@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./chatroom.styles.scss";
 import { useEffect } from "react";
 const ChatRoom = () => {
-  const [chatInput, setChatInput] = useState({});
+  const [chatInput, setChatInput] = useState({text:""});
   const handleChatSend = async (e) => {
     e.preventDefault();
     try {
