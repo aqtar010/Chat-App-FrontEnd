@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser, logoutUser } from "../../store/user/user.reducer";
+import { useSelector } from "react-redux";
 
 const Auth = () => {
   const dispatch = useDispatch();
+  const x=useSelector(state=>state.user.user)
   const [signInInputs, setsignInInputs] = useState({ email: "", password: "" });
   const [signUpInputs, setsignUpInputs] = useState({
     Fname: "",
@@ -50,8 +52,9 @@ const Auth = () => {
       } else {
         const data = await response.json();
         console.log("Success:", data);
-        dispatch(loginUser(data._doc))
+        dispatch(loginUser(data))
         setsignInInputs({ email: "", password: "" });
+        console.log(x);
         navigate("/chatroom");
       }
     } catch (error) {

@@ -1,8 +1,12 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./navbar.styles.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../store/user/user.reducer";
 
 const Navbar = () => {
-  
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <>
       <div className="navbar">
@@ -15,9 +19,19 @@ const Navbar = () => {
                   <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <Link to="/auth">Sign in</Link>
+                  {!isLoggedIn ? (
+                    <Link to="/auth">Sign in</Link>
+                  ) : (
+                    <span
+                      onClick={() => {
+                        dispatch(logoutUser());
+                        navigate("/auth");
+                      }}
+                    >
+                      Sign out
+                    </span>
+                  )}
                 </li>
-                <li></li>
               </ul>
             </span>
           </div>
