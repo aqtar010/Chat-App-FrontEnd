@@ -2,9 +2,11 @@ import { useState } from "react";
 import "./auth.styles.scss";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { loginUser, logoutUser } from "../../store/user/user.reducer";
 
 const Auth = () => {
+  const dispatch = useDispatch();
   const [signInInputs, setsignInInputs] = useState({ email: "", password: "" });
   const [signUpInputs, setsignUpInputs] = useState({
     Fname: "",
@@ -45,13 +47,13 @@ const Auth = () => {
       if (!response.ok) {
         alert("Sign-in failed");
         throw new Error("Sign-in failed");
+      } else {
+        const data = await response.json();
+        console.log("Success:", data);
+        dispatch(loginUser(data._doc))
+        setsignInInputs({ email: "", password: "" });
+        navigate("/chatroom");
       }
-
-      const data = await response.json();
-      console.log("Success:", data);
-
-      setsignInInputs({ email: "", password: "" });
-      navigate('/chatroom')
     } catch (error) {
       console.error("Error:", error.message);
       // Handle error, show error message to the user, etc.

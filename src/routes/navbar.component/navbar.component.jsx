@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import "./navbar.styles.scss";
 
 const Navbar = () => {
+  
   return (
     <>
       <div className="navbar">
