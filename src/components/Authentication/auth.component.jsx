@@ -8,7 +8,9 @@ import { useSelector } from "react-redux";
 
 const Auth = () => {
   const dispatch = useDispatch();
-  const x=useSelector(state=>state.user.user)
+  const x=useSelector(state=>state.user.user);
+  let y={};
+  useEffect(()=>{y=x},[x])
   const [signInInputs, setsignInInputs] = useState({ email: "", password: "" });
   const [signUpInputs, setsignUpInputs] = useState({
     Fname: "",
@@ -54,8 +56,8 @@ const Auth = () => {
         console.log("Success:", data);
         dispatch(loginUser(data))
         setsignInInputs({ email: "", password: "" });
-        console.log(x);
-        navigate("/chatroom");
+        console.log(data._id);
+        navigate(`/chatroom/${data._id}`);
       }
     } catch (error) {
       console.error("Error:", error.message);

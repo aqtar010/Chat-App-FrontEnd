@@ -13,7 +13,7 @@ function App() {
       <Route path="/" element={<Navbar />}>
         <Route index element={<Home />}/>
         <Route path="auth" element={<Auth/>} />
-        {isLoggedIn ?<Route path="chatroom" element={<ChatRoom/>}/>:null}
+        {isLoggedIn ?<Route path="chatroom/*" element={<ChatRoom/>}/>:null}
         
       </Route>
     </Routes>

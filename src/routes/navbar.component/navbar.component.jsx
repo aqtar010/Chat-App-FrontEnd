@@ -5,6 +5,7 @@ import { logoutUser } from "../../store/user/user.reducer";
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const signedInUser=useSelector((state)=>state.user.user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
