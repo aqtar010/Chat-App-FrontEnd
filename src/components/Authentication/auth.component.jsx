@@ -10,7 +10,7 @@ const Auth = () => {
   const dispatch = useDispatch();
   const x=useSelector(state=>state.user.user);
   let y={};
-  useEffect(()=>{y=x},[x])
+  useEffect(()=>{console.log(x);},[x])
   const [signInInputs, setsignInInputs] = useState({ email: "", password: "" });
   const [signUpInputs, setsignUpInputs] = useState({
     Fname: "",

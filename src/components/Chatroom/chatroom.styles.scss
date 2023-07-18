@@ -7,12 +7,12 @@
     grid-auto-flow: row;
     grid-template-areas: ". .";
     div {
-      border: 10px solid whitesmoke;
-      min-height: 400px;
+      //border: 10px solid whitesmoke;
+     
     }
     .chat-list-container {
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: column;
       flex-wrap: nowrap;
       justify-content: flex-start;
       align-items: center;
@@ -20,7 +20,7 @@
 
       ul {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
         flex-wrap: nowrap;
         justify-content: flex-start;
         align-items: center;
