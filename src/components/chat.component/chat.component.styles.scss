@@ -1,0 +1,141 @@
+// Assuming your chat leaf component has a class named 'chat-leaf'
+
+.chatleaf {
+  // Set minimum width and height to allow it to expand based on content
+  width: fit-content;
+  padding: 10px;
+  max-width: 300px; // Optional - adjust the maximum width based on your requirements
+  background-color: #f0f0f0; // Add any other styles you want here
+
+  // Ensure the content within the chat leaf doesn't overflow
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  // Add padding and margin to create some space between the content and the container's edges
+  padding: 10px;
+  margin: 5px;
+
+  // Add a border to visually distinguish the chat leaf
+  border: 1px solid #ccc;
+  
+  // Add some shadow to make the component stand out
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  // Style the message text within the chat leaf
+  p {
+    margin: 0; // Remove default paragraph margins
+    color: #fff; // Set the text color to your preference
+  }
+  code{
+    background-color: #333;
+    font-family: 'Courier New', Courier, monospace;
+    color: #fff;
+  }
+  pre{
+    background-color: #333;
+    font-family: 'Courier New', Courier, monospace;
+    color: #fff;
+  }
+}
+.chat-container {
+  // Set maximum height for the container, making it scrollable after a certain number of chat leafs
+  height: 400px; // Adjust the height as needed
+  overflow-y: auto; // Enable vertical scrolling
+
+  // Other styles for the container (e.g., background, border, etc.)
+  // background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+.sender {
+  // Styles for the chat leaf from the sender (right side)
+  // You can adjust these styles to your preference
+  align-self: flex-end;
+
+  background-color: #1a73e8;
+  color: #fff;
+  border-radius: 10px 10px 0 10px;
+}
+
+
+.receiver {
+  // Styles for the chat leaf from the receiver (left side)
+  // You can adjust these styles to your preference
+  align-self: flex-start;
+  background-color: #333;
+  color: #f0f0f0;
+  border-radius: 10px 10px 10px 0;
+}
+.senderChat{
+  display: flex;
+  justify-content: flex-end;
+}
+.Sendbtn {
+  margin: 10px;
+  position: absolute;
+  right: 10px;
+  font-family: inherit;
+  font-size: 20px;
+  background: royalblue;
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.Sendbtn span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+
+}
+
+.Sendbtn svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.Sendbtn:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+  cursor: pointer;
+}
+
+.Sendbtn:hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+.Sendbtn:hover span {
+  transform: translateX(5em);
+}
+
+.Sendbtn:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+.MentionButton{
+  padding: 10px;
+  margin: 10px;
+  background-color: royalblue;
+  border-radius: 5px;
+  color: #f0f0f0;
+  transition: .2s linear;
+  border: none;
+}
+.MentionButton:hover{
+  scale: 1.2;
+  cursor: pointer;
+}

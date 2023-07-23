@@ -4,72 +4,88 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import ChatComponent from "../chat.component/chat.component";
 import ChatList from "../chatList.component/chatList.component";
+import { io } from "socket.io-client";
+import { json } from "react-router-dom";
 
+const newSocket = io("http://localhost:5050", { autoConnect: false });
 const ChatRoom = () => {
-  const [chatInput, setChatInput] = useState({
-    text: "",
-    timestamp: "",
-    sender_id: "",
-  });
-  const send_id = useSelector((state) => state.user.user._id);
-  const handleChatSend = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:5000/chatroom/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(chatInput),
-      });
-      if (!response.ok) {
-        throw new Error("Message sending failed");
-      }
-      const data = await response.json();
-      console.log("Message sent Success:", data);
-
-      setChatInput({ text: "", timestamp: "", sender_id: "" });
-    } catch (error) {
-      console.error("Error:", error.message);
-      // Handle error, show error message to the user, etc.
-    }
+  const signedInUser = useSelector((state) => state.user.user);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const [messages,setMessages]=useState([])
+  const [selectedChat, setSelectedChat] = useState([]);
+  const listItemClickHandler = (elem) => {
+    setSelectedChat(elem);
   };
   useEffect(() => {
-    console.log(chatInput);
-  }, [chatInput]);
-  
-  const handleChatInputChange = (e) => {
-    setChatInput((values) => {
-      return {
-        ...values,
-        text: e.target.value,
-        timestamp: Date.now(),
-        sender_id: send_id,
-      };
+    if (isLoggedIn) {
+      newSocket.connect();
+      newSocket.emit("setUsername", signedInUser);
+      newSocket.on("privateMessage", (eventData) => {
+        console.log("a new message recieve");
+        setMessages((prev)=>[...prev,JSON.parse(eventData),])
+      });
+      newSocket.onAny((eventName, ...args) => {
+        console.log(eventName);
+      });
+      newSocket.on("connectedClients", (users) => {
+        if (users) {
+          setUserList(users);
+        }
+      });
+    }
+    return () => {
+      newSocket.off('privateMessage');
+      newSocket.off('connectedClients');
+      newSocket.disconnect();
+    };
+  }, []);
+  const [userList, setUserList] = useState([]);
+  const [activeUsers, setActiveUsers] = useState([]);
+  useEffect(() => {
+    setActiveUsers(() =>
+      userList.filter((elem) => {
+        return elem[0] !== newSocket.id;
+      })
+    );
+  }, [userList]);
+  const [receivedFile, setReceivedFile] = useState(null);
+
+  useEffect(() => {
+    // Listen for file received from the server
+    newSocket.on('fileReceived', (data) => {
+      console.log(data);
+      setReceivedFile(data);
+      setMessages((prev)=>[...prev,data])
     });
-  };
-  const listItemClickHandler=(elem)=>{
-    console.log(elem);
-  }
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      newSocket.off('fileReceived');
+    };
+  }, []);
+
   return (
     <div className="chatroom-container">
       <div className="chatroom-header">
         <h1>Chat Room</h1>
       </div>
-      <span>
-        <ChatList listItemClick={(elem)=>listItemClickHandler(elem)}/>
+      <span className="chatroom-b">
+        <ChatList
+          listItemClick={(elem) => listItemClickHandler(elem)}
+          activeUsers={activeUsers}
+        />
         <div className="chat-area-conntainer">
-          <ChatComponent />
-          <form type="submit" onSubmit={handleChatSend}>
-            <input
-              type="textarea"
-              placeholder="Enter Message"
-              value={chatInput.text}
-              onChange={handleChatInputChange}
-            ></input>
-            <button>Enter</button>
-          </form>
+          <ChatComponent selectedChat={selectedChat} socket={newSocket} messages={messages} activeUsers={activeUsers} receivedFile={receivedFile}/>
         </div>
       </span>
     </div>
   );
 };
+
+const disconnectSocket = () => {
+  if (newSocket) {
+    newSocket.disconnect();
+  }
+};
 export default ChatRoom;
+export { disconnectSocket };

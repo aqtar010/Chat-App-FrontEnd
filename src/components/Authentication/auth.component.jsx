@@ -8,9 +8,7 @@ import { useSelector } from "react-redux";
 
 const Auth = () => {
   const dispatch = useDispatch();
-  const x=useSelector(state=>state.user.user);
-  let y={};
-  useEffect(()=>{console.log(x);},[x])
+  const x = useSelector((state) => state.user.user);
   const [signInInputs, setsignInInputs] = useState({ email: "", password: "" });
   const [signUpInputs, setsignUpInputs] = useState({
     Fname: "",
@@ -40,7 +38,7 @@ const Auth = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/auth/sign-in", {
+      const response = await fetch("http://localhost:5050/auth/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,9 +52,8 @@ const Auth = () => {
       } else {
         const data = await response.json();
         console.log("Success:", data);
-        dispatch(loginUser(data))
+        dispatch(loginUser(data));
         setsignInInputs({ email: "", password: "" });
-        console.log(data._id);
         navigate(`/chatroom/${data._id}`);
       }
     } catch (error) {
