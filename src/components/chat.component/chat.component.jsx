@@ -5,6 +5,7 @@ import * as Emoji from "quill-emoji";
 import "react-quill/dist/quill.snow.css";
 import "quill-emoji/dist/quill-emoji.css";
 import "./chat.component.styles.scss";
+import Microlink from "@microlink/react";
 Quill.register("modules/emoji", Emoji);
 let a;
 const ChatComponent = ({
@@ -19,6 +20,7 @@ const ChatComponent = ({
   const quillRef = useRef(null);
   const [fileUp, setFileUp] = useState(false);
   const [file, setFile] = useState(null);
+  const [Link, setLink] = useState({ hasLink: false, href: "" });
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
@@ -56,7 +58,7 @@ const ChatComponent = ({
 
   const messagesSubmitHandler = (e) => {
     e.preventDefault();
-    
+
     if (value) {
       socket.emit(
         "privateMessage",
@@ -66,9 +68,11 @@ const ChatComponent = ({
           senderId: socket.id,
           timestamp: Date.now(),
           messageID: Math.random().toString(36).substring(2, 8),
+          link: Link,
           type: "message",
         })
-      );console.log("messages sent");
+      );
+      console.log("messages sent");
       setValue("");
     }
   };
@@ -114,6 +118,23 @@ const ChatComponent = ({
     });
   };
 
+  const extractLink = (content) => {
+    const linkRegex = /<a href="(.*?)"/;
+    const match = content.match(linkRegex);
+    return match ? match[1] : null;
+  };
+  const hasWebLink = (content) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = content;
+    const links = tempDiv.getElementsByTagName("a");
+    return links.length > 0;
+  };
+  // Function to handle content change
+  const handleContentChange = (content) => {
+    setLink({ hasLink: hasWebLink(content), href: extractLink(content) });
+    setValue(content);
+  };
+
   return (
     <div>
       {selectedChat.length ? (
@@ -122,7 +143,29 @@ const ChatComponent = ({
             {messages.length ? (
               messages.map((elem) => {
                 if (elem.type === "message") {
-                  return msgHtmler(elem.message, elem.recipientId);
+                  if (!elem.link.hasLink) {
+                    return msgHtmler(elem.message, elem.recipientId);
+                  } else if (elem.link.hasLink) {
+                    return (
+                      <div
+                        className={`${
+                          socket.id === elem.recipientId ? "" : "senderChat"
+                        }`}
+                      >
+                        {" "}
+                        <div
+                          className={`chatleaf ${
+                            socket.id === elem.recipientId
+                              ? "receiver"
+                              : "sender"
+                          }`}
+                        >
+                          {" "}
+                          <Microlink url={elem.link.href} size="large" />
+                        </div>{" "}
+                      </div>
+                    );
+                  }
                 } else if (elem.type === "File") {
                   return msgHtmler(
                     `<h3>Received File:</h3>
@@ -142,19 +185,16 @@ const ChatComponent = ({
           <ReactQuill
             theme="snow"
             value={value}
-            onChange={setValue}
+            onChange={handleContentChange}
             modules={modules}
             ref={quillRef}
           />
-
 
           <button
             type="submit"
             onClick={messagesSubmitHandler}
             className="Sendbtn"
           >
-
-            
             <div className="svg-wrapper-1">
               <div className="svg-wrapper">
                 <svg
