@@ -109,7 +109,7 @@ const ChatComponent = ({
           }`}
         >
           {" "}
-          <div dangerouslySetInnerHTML={{ __html: e }} /><span>{timeFormatter(timestamp)}</span>
+          <div dangerouslySetInnerHTML={{ __html: e }} /><span className="timestamp">{timeFormatter(timestamp)}</span>
         </div>
       </div>
     );
@@ -188,7 +188,7 @@ const ChatComponent = ({
                             }`}
                           >
                             <Microlink url={elem.link.href} size="large" media={['image', 'logo']}/>
-                            <span>{timeFormatter(elem.timestamp)}</span>
+                            <span className="timestamp">{timeFormatter(elem.timestamp)}</span>
                           </div>
                         </div>
                       );
@@ -206,7 +206,7 @@ const ChatComponent = ({
                 }
               })
             ) : (
-              <p>No mess</p>
+              <p>No messages</p>
             )}
           </div>
 
@@ -246,10 +246,10 @@ const ChatComponent = ({
             onClick={handleMentionButtonClick}
             className="MentionButton"
           >
-            <span>@</span>
+            <span> @ </span>
           </button>
           <button onClick={fileUpClik} className="MentionButton">
-            <span>+</span>
+            <span> + </span>
           </button>
           {fileUp ? (
             <div className="file-inputs">
@@ -261,7 +261,7 @@ const ChatComponent = ({
           )}
         </div>
       ) : (
-        <>please Select a chat</>
+        <h2>Select a chat</h2>
       )}
     </div>
   );
