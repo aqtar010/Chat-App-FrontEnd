@@ -11,9 +11,10 @@ const newSocket = io("http://localhost:5050", { autoConnect: false });
 const ChatRoom = () => {
   const signedInUser = useSelector((state) => state.user.user);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const [messages,setMessages]=useState([])
+  const [messages, setMessages] = useState([]);
   const [selectedChat, setSelectedChat] = useState([]);
   const listItemClickHandler = (elem) => {
+    console.log(elem);
     setSelectedChat(elem);
   };
   useEffect(() => {
@@ -22,7 +23,7 @@ const ChatRoom = () => {
       newSocket.emit("setUsername", signedInUser);
       newSocket.on("privateMessage", (eventData) => {
         console.log("a new message recieve");
-        setMessages((prev)=>[...prev,JSON.parse(eventData),])
+        setMessages((prev) => [...prev, JSON.parse(eventData)]);
       });
       newSocket.onAny((eventName, ...args) => {
         console.log(eventName);
@@ -34,8 +35,8 @@ const ChatRoom = () => {
       });
     }
     return () => {
-      newSocket.off('privateMessage');
-      newSocket.off('connectedClients');
+      newSocket.off("privateMessage");
+      newSocket.off("connectedClients");
       newSocket.disconnect();
     };
   }, []);
@@ -52,22 +53,22 @@ const ChatRoom = () => {
 
   useEffect(() => {
     // Listen for file received from the server
-    newSocket.on('fileReceived', (data) => {
+    newSocket.on("fileReceived", (data) => {
       console.log(data);
       setReceivedFile(data);
-      setMessages((prev)=>[...prev,data])
+      setMessages((prev) => [...prev, data]);
     });
 
     // Clean up the event listener when the component unmounts
     return () => {
-      newSocket.off('fileReceived');
+      newSocket.off("fileReceived");
     };
   }, []);
 
   return (
     <div className="chatroom-container">
       <div className="chatroom-header">
-        <h1>Chat Room</h1>
+        <h2 className="title-string">Chat Room of {signedInUser.FirstName.toUpperCase()}</h2>
       </div>
       <span className="chatroom-b">
         <ChatList
@@ -75,7 +76,13 @@ const ChatRoom = () => {
           activeUsers={activeUsers}
         />
         <div className="chat-area-conntainer">
-          <ChatComponent selectedChat={selectedChat} socket={newSocket} messages={messages} activeUsers={activeUsers} receivedFile={receivedFile}/>
+          <ChatComponent
+            selectedChat={selectedChat}
+            socket={newSocket}
+            messages={messages}
+            activeUsers={activeUsers}
+            receivedFile={receivedFile}
+          />
         </div>
       </span>
     </div>

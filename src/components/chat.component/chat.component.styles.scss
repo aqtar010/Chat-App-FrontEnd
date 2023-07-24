@@ -39,12 +39,15 @@
 }
 .chat-container {
   // Set maximum height for the container, making it scrollable after a certain number of chat leafs
-  height: 400px; // Adjust the height as needed
+  height: 450px; // Adjust the height as needed
   overflow-y: auto; // Enable vertical scrolling
 
   // Other styles for the container (e.g., background, border, etc.)
-  // background-color: #f0f0f0;
-  border: 1px solid #ccc;
+   background-color: #0c346b;
+   border-radius: 10px;
+   padding: 10px;
+   margin-right: 10px;
+  //border: 1px solid #ccc;
 }
 .sender {
   // Styles for the chat leaf from the sender (right side)
@@ -138,4 +141,7 @@
 .MentionButton:hover{
   scale: 1.2;
   cursor: pointer;
+}
+.current-user-title{
+  margin: 10px;
 }

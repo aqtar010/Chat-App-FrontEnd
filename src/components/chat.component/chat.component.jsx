@@ -25,10 +25,17 @@ const ChatComponent = ({
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
   };
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
+  const chatContainerRef = useRef(null);
 
+  useEffect(() => {
+    // Scroll to the bottom when the component first mounts or messages update
+    scrollToBottom();
+  }, [messages]);
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
   useEffect(() => {
     setMentionList(
       activeUsers.map((user, index) => ({ id: index, value: user[1] }))
@@ -77,7 +84,22 @@ const ChatComponent = ({
     }
   };
 
-  const msgHtmler = (e, recipientId) => {
+  const timeFormatter=(timestamp)=>{
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+  
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  // Convert to 12-hour format
+  const twelveHourFormat = hours % 12 || 12;
+
+  // Pad the minutes with leading zero if necessary
+  const paddedMinutes = minutes.toString().padStart(2, '0');
+
+  return `${twelveHourFormat}:${paddedMinutes} ${ampm}`;
+  }
+  const msgHtmler = (e, timestamp,recipientId) => {
     return (
       <div className={`${socket.id === recipientId ? "" : "senderChat"}`}>
         {" "}
@@ -87,8 +109,8 @@ const ChatComponent = ({
           }`}
         >
           {" "}
-          <div dangerouslySetInnerHTML={{ __html: e }} />{" "}
-        </div>{" "}
+          <div dangerouslySetInnerHTML={{ __html: e }} /><span>{timeFormatter(timestamp)}</span>
+        </div>
       </div>
     );
   };
@@ -104,6 +126,7 @@ const ChatComponent = ({
         senderId: socket.id,
         recipientId: selectedChat[0],
         type: "File",
+        timestamp:Date.now(),
         fileData,
       };
       socket.emit("file", data);
@@ -138,43 +161,48 @@ const ChatComponent = ({
   return (
     <div>
       {selectedChat.length ? (
-        <div>
-          <div className="chat-container">
+        <div><h2 className="current-user-title">{selectedChat[1].toUpperCase()}</h2>
+          <div ref={chatContainerRef} className="chat-container">
+            
             {messages.length ? (
               messages.map((elem) => {
-                if (elem.type === "message") {
-                  if (!elem.link.hasLink) {
-                    return msgHtmler(elem.message, elem.recipientId);
-                  } else if (elem.link.hasLink) {
-                    return (
-                      <div
-                        className={`${
-                          socket.id === elem.recipientId ? "" : "senderChat"
-                        }`}
-                      >
-                        {" "}
+                if (
+                  selectedChat[0] === elem.recipientId ||
+                  selectedChat[0] === elem.senderId
+                ) {
+                  if (elem.type === "message") {
+                    if (!elem.link.hasLink) {
+                      return msgHtmler(elem.message,elem.timestamp, elem.recipientId);
+                    } else if (elem.link.hasLink) {
+                      return (
                         <div
-                          className={`chatleaf ${
-                            socket.id === elem.recipientId
-                              ? "receiver"
-                              : "sender"
+                          className={`${
+                            socket.id === elem.recipientId ? "" : "senderChat"
                           }`}
                         >
-                          {" "}
-                          <Microlink url={elem.link.href} size="large" />
-                        </div>{" "}
-                      </div>
-                    );
-                  }
-                } else if (elem.type === "File") {
-                  return msgHtmler(
-                    `<h3>Received File:</h3>
+                          <div
+                            className={`chatleaf ${
+                              socket.id === elem.recipientId
+                                ? "receiver"
+                                : "sender"
+                            }`}
+                          >
+                            <Microlink url={elem.link.href} size="large" media={['image', 'logo']}/>
+                            <span>{timeFormatter(elem.timestamp)}</span>
+                          </div>
+                        </div>
+                      );
+                    }
+                  } else if (elem.type === "File") {
+                    return msgHtmler(
+                      `<h3>File:</h3>
                   <p>File Name: ${receivedFile.fileName}</p>
                   <a href=${`data:application/octet-stream;base64,${receivedFile.fileData}`} download>
                     Download File
-                  </a>`,
-                    elem.recipientId
-                  );
+                  </a>`,elem.timestamp,
+                      elem.recipientId
+                    );
+                  }
                 }
               })
             ) : (

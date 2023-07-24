@@ -1,28 +1,19 @@
-import { useEffect, useState } from "react";
-
+import './chatlist.styles.scss'
 const ChatList = ({ listItemClick, activeUsers }) => {
-  // const [userList, setUserList] = useState([]);
-  // const [activeUsers, setActiveUsers] = useState([]);
-  // useEffect(() => {
-  //   console.log("user list effect ran",userList);
-  //   setActiveUsers(() =>
-  //     userList.filter((elem) => {
-  //       return elem[0] !== socket.id;
-  //     })
-  //   );
-  // }, [userList]);
-  
-  
-
-  const groupChatHandler = () => {};
   return (
     <div className="chat-list-container">
-      <span>Active users list</span>
+      <h3>Active users list</h3>
       <ul>
-        <li onClick={() => listItemClick(activeUsers)}>Group Chat</li>
         {activeUsers.map((elem, index) => (
           <li key={elem[0]} onClick={() => listItemClick(elem)}>
-            {elem[1]}
+            <div className="chatlist-card">
+              <span>
+                <img src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+              </span>
+              <span>
+                <h2>{elem[1]}</h2>
+              </span>
+            </div>
           </li>
         ))}
       </ul>

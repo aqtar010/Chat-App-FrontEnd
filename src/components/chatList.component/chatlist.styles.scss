@@ -1,0 +1,28 @@
+.chat-list-container{
+    //border: 2px solid white;
+    h3{
+        margin: 10px 10px;
+    }
+    ul{
+        margin: 50px 20px;
+        position: absolute;
+        .chatlist-card{
+            //border: 2px solid greenyellow;
+            padding: 0 20px;
+            display: flex;
+            margin: 10px 0;
+            background-color: rgba(46, 93, 186, 0.695);transition: all 400ms ease;
+            border-radius: 15px;
+            width: 100%;
+            img{
+                border-radius: 100%;
+                max-width: 80px;
+                padding: 10px 20px;
+            }
+        
+        }.chatlist-card:hover{
+            scale: 1.1;
+            cursor: pointer;
+        }
+    }
+}
